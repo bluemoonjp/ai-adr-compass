@@ -1,0 +1,21 @@
+# {short title}
+
+Status: accepted
+
+Date: YYYY-MM-DD
+
+## Context
+
+{context}
+
+## Decision
+
+{decision}
+
+## Consequences
+
+{consequences}
+
+## Extra Section
+
+{a section this repository's own ADRs do not use}

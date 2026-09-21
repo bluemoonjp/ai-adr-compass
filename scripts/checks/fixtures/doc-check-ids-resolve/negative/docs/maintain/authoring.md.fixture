@@ -1,0 +1,7 @@
+# Authoring
+
+<!-- gen:start -->
+| Check | Blocking | Enforces | What it protects |
+| --- | --- | --- | --- |
+| `sample-check` | yes |  | Sample files must contain the word sample. |
+<!-- gen:end -->

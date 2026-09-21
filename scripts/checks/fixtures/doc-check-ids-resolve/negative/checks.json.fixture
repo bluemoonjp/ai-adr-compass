@@ -1,0 +1,13 @@
+{
+  "checks": [
+    {
+      "id": "sample-check",
+      "script": "scripts/checks/sample-check.mjs",
+      "blocking": true,
+      "fast": true,
+      "fixture": true,
+      "protects": "Sample files must contain the word sample.",
+      "enforces": []
+    }
+  ]
+}

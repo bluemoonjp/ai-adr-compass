@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+# Synthetic pattern used only to verify this workflow's gitleaks wiring in CI.
+# It never matches a real secret.
+[[rules]]
+id = "adr-compass-test-secret"
+description = "Synthetic secret pattern used to verify gitleaks wiring in CI"
+regex = '''ADR_COMPASS_TEST_SECRET_[A-Z0-9]{16}'''

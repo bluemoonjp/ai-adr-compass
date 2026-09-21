@@ -1,0 +1,9 @@
+# Sample
+
+<!-- gen:start:how-to-use-en -->
+_This block is stale and does not match what pnpm gen would produce._
+<!-- gen:end:how-to-use-en -->
+
+<!-- gen:start:how-to-use-ja -->
+_このブロックは陳腐化しており、pnpm gen の出力と一致しない。_
+<!-- gen:end:how-to-use-ja -->

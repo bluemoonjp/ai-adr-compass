@@ -1,0 +1,12 @@
+---
+name: extra-key-skill
+description: A sample skill.
+license: MIT
+compatibility: ">=1.0.0"
+metadata:
+  topics: [sample]
+allowed-tools: [Read]
+extra-key: not allowed
+---
+
+Body.

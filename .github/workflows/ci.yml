@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-node-pnpm
+      - run: pnpm test
+      - run: pnpm check
+        env:
+          COMPASS_PRIVATE_PATTERNS: ${{ secrets.COMPASS_PRIVATE_PATTERNS }}
+          COMPASS_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          COMPASS_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          COMPASS_RELEASE_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v18
+        with:
+          globs: |
+            **/*.md
+            **/*.template
+            !scripts/checks/fixtures/**
+            !node_modules/**
+
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline
+            --exclude-path scripts/checks/fixtures
+            --exclude-path node_modules
+            '**/*.md' '**/*.template'
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+  pr-title:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          ACTOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          if [ "$ACTOR" = "dependabot[bot]" ]; then
+            echo "dependabot PR, skipping title check"
+            exit 0
+          fi
+          if [[ "$TITLE" == deps:\ * ]]; then
+            echo "deps: prefixed PR, skipping title check"
+            exit 0
+          fi
+          if [[ "$TITLE" =~ ^#[0-9]+:\ .+ ]]; then
+            exit 0
+          fi
+          echo "PR title must match '#N: summary' (dependabot and 'deps: ' titles are exempt)"
+          exit 1

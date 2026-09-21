@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "id": "infoq-architecture-feed",
+      "url": "https://feed.infoq.com/architecture-design/",
+      "method": "etag",
+      "role": "source",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
+    },
+    {
+      "id": "ozimmer-feed",
+      "url": "https://ozimmer.ch/feed.xml",
+      "method": "etag",
+      "role": "source",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
+    },
+    {
+      "id": "control-static-rfc2119",
+      "url": "https://www.rfc-editor.org/rfc/rfc2119.txt",
+      "method": "md5",
+      "role": "control-static",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22" }
+    },
+    {
+      "id": "control-changing-time",
+      "url": "https://timeapi.io/api/time/current/zone?timeZone=UTC",
+      "method": "md5",
+      "role": "control-changing",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22" }
+    }
+  ]
+}

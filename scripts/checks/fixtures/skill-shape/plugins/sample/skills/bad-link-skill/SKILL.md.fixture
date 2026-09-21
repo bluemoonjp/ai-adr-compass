@@ -1,0 +1,6 @@
+---
+name: bad-link-skill
+description: A sample skill whose body links outside its own references/.
+---
+
+See [escape](../sibling-skill/SKILL.md).

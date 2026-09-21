@@ -1,0 +1,5 @@
+{
+  "checks": [
+    { "id": "sample-check", "enforces": ["0001"] }
+  ]
+}

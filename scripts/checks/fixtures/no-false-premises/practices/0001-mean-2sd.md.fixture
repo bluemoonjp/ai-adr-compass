@@ -1,0 +1,3 @@
+# Sample
+
+A source is flagged once its fetch latency drifts past mean + 2 standard deviations.

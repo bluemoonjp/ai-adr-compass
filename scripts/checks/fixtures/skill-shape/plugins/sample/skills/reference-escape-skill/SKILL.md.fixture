@@ -1,0 +1,6 @@
+---
+name: reference-escape-skill
+description: A sample skill whose references/ file links back out.
+---
+
+See [detail](references/detail.md).

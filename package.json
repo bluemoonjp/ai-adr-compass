@@ -1,0 +1,21 @@
+{
+  "name": "ai-adr-compass",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.5.1",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "check:fast": "node scripts/check.mjs --fast",
+    "test": "node --test",
+    "gen": "node scripts/gen.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1",
+    "markdownlint-cli2": "0.14.0",
+    "yaml": "2.6.1"
+  }
+}

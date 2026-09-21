@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "defs.schema.json",
+  "$defs": {
+    "status": {
+      "enum": ["draft", "active"]
+    },
+    "topic": {
+      "description": "Closed enum. Its initial value is the seed content's topic only (adr-scope); widen it only alongside content that uses the new value.",
+      "enum": ["adr-scope"]
+    },
+    "appliesTo": {
+      "description": "Which ADR convention a practice, antipattern, or registry anchor applies to, not an agent tool name.",
+      "enum": ["general", "madr", "nygard"]
+    },
+    "sourceKind": {
+      "enum": ["primary", "research", "other"]
+    },
+    "sourceConfidence": {
+      "enum": ["verified", "unverified", "unavailable", "derived"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "kind", "confidence", "verified_on", "summary"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://\\S+$" },
+        "kind": { "$ref": "#/$defs/sourceKind" },
+        "confidence": { "$ref": "#/$defs/sourceConfidence" },
+        "verified_on": {
+          "type": "string",
+          "description": "The last date this source was actually re-checked. The only place a verification date is recorded.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "summary": { "type": "string", "maxLength": 300 },
+        "quote": { "type": "string", "maxLength": 300 },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "confidence": { "const": "verified" } }, "required": ["confidence"] },
+          "then": { "required": ["quote"], "properties": { "quote": { "type": "string" } } }
+        },
+        {
+          "if": { "properties": { "confidence": { "const": "unavailable" } }, "required": ["confidence"] },
+          "then": { "required": ["note"], "properties": { "note": { "type": "string" } } }
+        }
+      ]
+    }
+  }
+}

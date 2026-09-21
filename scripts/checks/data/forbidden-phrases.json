@@ -1,0 +1,38 @@
+{
+  "groups": [
+    {
+      "id": "history",
+      "scope": ["practices/**", "templates/**", "adapters/**", "plugins/**/SKILL.md", ".claude/skills/**/SKILL.md", "AGENTS.md", "CLAUDE.md"],
+      "patterns": [
+        "used to",
+        "formerly",
+        "deprecated in favor of",
+        "was changed to",
+        "以前は",
+        "かつては",
+        "に変わった"
+      ]
+    },
+    {
+      "id": "false-premise",
+      "scope": ["practices/**", "templates/**", "adapters/**", "plugins/**/SKILL.md", ".claude/skills/**/SKILL.md", "AGENTS.md", "CLAUDE.md"],
+      "excludeIfMatches": ["\\b(not|no|did ?n['o]t)\\b"],
+      "patterns": [
+        "mean\\s*\\+\\s*2\\s*(standard deviations?|σ|sd)",
+        "10\\s*(adrs?|records?|decisions?)\\s*(per|/)\\s*7\\s*days",
+        "fan.?out.{0,40}\\b28\\b",
+        "stale\\s*days.{0,20}\\b14\\b"
+      ]
+    },
+    {
+      "id": "single-canon",
+      "scope": ["templates/**", "plugins/**/SKILL.md", ".claude/skills/**/SKILL.md"],
+      "patterns": [
+        "^#+\\s*.*Conflicting",
+        "on (the|one) other hand",
+        "some (argue|say|believe|prefer)",
+        "opinions? (differ|vary)"
+      ]
+    }
+  ]
+}

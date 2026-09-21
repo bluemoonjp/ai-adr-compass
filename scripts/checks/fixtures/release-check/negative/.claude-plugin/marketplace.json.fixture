@@ -1,0 +1,14 @@
+{
+  "name": "sample-marketplace",
+  "description": "Sample.",
+  "owner": { "name": "sample" },
+  "plugins": [
+    { "name": "sample", "source": "./plugins/sample", "description": "Sample.", "version": "1.0.0" },
+    {
+      "name": "remote",
+      "source": { "source": "github", "repo": "example/remote-plugin" },
+      "description": "Sample.",
+      "version": "1.0.0"
+    }
+  ]
+}
