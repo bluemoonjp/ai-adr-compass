@@ -1,0 +1,3 @@
+# ai-adr-compass
+
+ai-adr-compass collects sourced practices and antipatterns for keeping Architecture Decision Records from rotting — in volume and in staleness — as AI coding agents write them, together with the checks, a self-contained volume-measuring instrument, and templates needed to enforce them. It is meant to be read by AI agents working in other projects and maintained by a human; content only lands once each claim traces to a primary or research source verified against the live document, or to a measurement this repository publishes and re-runs against itself. See [ROADMAP.md](ROADMAP.md) for the phased plan, tracked issue by issue.
