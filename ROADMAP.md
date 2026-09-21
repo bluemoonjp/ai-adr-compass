@@ -14,4 +14,4 @@ Tracking issue: [#27](https://github.com/bluemoonjp/ai-adr-compass/issues/27)
 | Phase 5 — Distribution | 5a: prose templates (`templates/`). 5b: the `adr-compass` plugin — two skills, `adr-record` and `adr-corpus-review`. | [#24](https://github.com/bluemoonjp/ai-adr-compass/issues/24), [#25](https://github.com/bluemoonjp/ai-adr-compass/issues/25) |
 | Phase 6 — Antipatterns | Corruption mechanisms, each sourced from Phase 4's public measurements. | [#26](https://github.com/bluemoonjp/ai-adr-compass/issues/26) |
 
-Progress is tracked via the sub-issues of #27, not by editing this file.
+Progress is tracked via the sub-issues of [#27](https://github.com/bluemoonjp/ai-adr-compass/issues/27), not by editing this file.
