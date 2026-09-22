@@ -30,6 +30,7 @@ Write an ADR only when deleting the decision would let someone repeat the mistak
 | `docs/adr/` | Architecture decision records |
 | `docs/maintain/` | Maintainer setup, authoring, review, and patrol instructions |
 | `measurements/` | Public, append-only aggregate measurements this repository publishes |
+| `plugins/` | The `adr-compass` plugin: per-record and per-corpus skills, generated from practices/, antipatterns/, templates/, and starter/ |
 | `practices/` | Sourced best practices for writing and maintaining ADRs |
 | `schemas/` | JSON Schemas for practice, antipattern, skill frontmatter, and the source registry |
 | `scripts/` | The check toolchain: runner, checks, and their fixtures |

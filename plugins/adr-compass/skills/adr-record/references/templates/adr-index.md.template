@@ -1,0 +1,27 @@
+# Architecture Decision Records
+
+## When to write one
+
+Write an ADR only when deleting the decision would let someone repeat the mistake, and re-deciding it would need reconstructing an incident or a long investigation. Triage first; not every decision this project makes belongs in this log.
+
+## Status
+
+Each ADR declares exactly one `Status:` value naming its current state, so a reader can tell in one glance whether the decision still holds.
+
+This template's own vocabulary is four values: `accepted`, `superseded by ADR-NNNN`, `amended by ADR-NNNN`, `withdrawn`. `superseded` replaces the decision; `amended` narrows or corrects it while the original decision still holds; either way, the superseding or amending ADR must exist in this directory. Adopt this vocabulary or another; what a reader needs is one clearly named current state, not this specific set of words.
+
+## Deleting an ADR
+
+Don't delete an ADR outright. Mark it `withdrawn`, or `superseded by ADR-NNNN` / `amended by ADR-NNNN` pointing at the ADR that replaces or narrows it, so a future reader always has somewhere to go next.
+
+## Filename
+
+`docs/adr/NNNN-short-slug.md`, a zero-padded four-digit number followed by a lowercase, hyphenated slug. Numbers are never reused.
+
+## Date
+
+Each ADR has exactly one `Date:` line, formatted `YYYY-MM-DD`, recording the date the decision was made.
+
+## Template
+
+Copy `adr.md.template` from this same directory.

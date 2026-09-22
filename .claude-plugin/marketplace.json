@@ -1,0 +1,13 @@
+{
+  "name": "ai-adr-compass",
+  "description": "Sourced practices and antipatterns for keeping Architecture Decision Records from rotting, in volume and in staleness.",
+  "owner": { "name": "bluemoonjp" },
+  "plugins": [
+    {
+      "name": "adr-compass",
+      "source": "./plugins/adr-compass",
+      "description": "Per-record and per-corpus skills for writing and auditing Architecture Decision Records.",
+      "version": "0.1.0"
+    }
+  ]
+}

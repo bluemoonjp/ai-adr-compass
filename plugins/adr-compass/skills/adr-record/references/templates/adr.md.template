@@ -1,0 +1,18 @@
+# ADR-NNNN: Title
+
+Status: accepted
+
+Issue: #NNNN
+Date: YYYY-MM-DD
+
+## Context
+
+What forces are in tension, and what happens if this is never decided.
+
+## Decision
+
+What was decided, stated as a single commitment.
+
+## Consequences
+
+What this makes easier, what it makes harder, and what it rules out.
