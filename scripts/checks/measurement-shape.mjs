@@ -13,8 +13,27 @@ const PUBLISHED_LINE = /^Published:\s*\d{4}-\d{2}-\d{2}$/
 const H2_PATTERN = /^##\s+(.+?)\s*$/
 const HEADING_LINE = /^#{1,6}\s/
 const ALLOWED_H2 = ['Corpus characteristics', 'Volume']
-const CHARACTERISTICS_FIELDS = new Set(['visibility', 'record count', 'observed days', 'primary language', 'reference notation'])
+// "source url" names where an already-public corpus lives (measurements/README.md's
+// "Public corpora are named, not anonymized"), since a citation a reader cannot
+// re-run against the same corpus is the unreproducible number ADR-0003 exists to
+// avoid shipping. It must never appear when "visibility" is anything other than
+// "public" -- enforced below -- because that is exactly the row a corpus meant to
+// stay anonymized must not carry. There is no converse rule: a public corpus that
+// is its own measuring repository (this repository's own corpus-a) cites itself by
+// being the file's own home, not by this row, so its absence is not flagged.
+// Its value must name the corpus's directory, not a specific record: a URL whose
+// path contains an ADR-NNNN-shaped segment trips FORBIDDEN_RECORD_ID below like any
+// other record-id leak, intentionally -- see measurement-shape.test.mjs.
+const CHARACTERISTICS_FIELDS = new Set([
+  'visibility',
+  'record count',
+  'observed days',
+  'primary language',
+  'reference notation',
+  'source url',
+])
 const TABLE_ROW = /^\|\s*([^|]+?)\s*\|/
+const TABLE_ROW_VALUE = /^\|\s*[^|]+?\s*\|\s*([^|]*?)\s*\|/
 // Any GFM header-separator cell: --- , :--- , ---: , :---: . Not just the
 // literal "---" this repository's own fixtures happen to use.
 const TABLE_SEPARATOR_CELL = /^:?-+:?$/
@@ -51,6 +70,7 @@ export function run({ files }) {
     let sawPublished = false
     let currentSection = null
     const seenH2 = []
+    const characteristics = new Map()
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i]
@@ -77,6 +97,9 @@ export function run({ files }) {
           const field = row[1].trim()
           if (field !== 'field' && !TABLE_SEPARATOR_CELL.test(field) && !CHARACTERISTICS_FIELDS.has(field)) {
             findings.push({ path: file.path, line: lineNo, ruleId: `${RULE_ID}:unknown-field` })
+          } else if (CHARACTERISTICS_FIELDS.has(field)) {
+            const valueMatch = TABLE_ROW_VALUE.exec(line)
+            characteristics.set(field, { value: valueMatch ? valueMatch[1].trim() : '', line: lineNo })
           }
         }
       }
@@ -95,6 +118,16 @@ export function run({ files }) {
     }
     if (seenH2.join(',') !== ALLOWED_H2.join(',')) {
       findings.push({ path: file.path, line: 1, ruleId: `${RULE_ID}:heading-set` })
+    }
+
+    // A "source url" row is exactly what an anonymized corpus must never
+    // carry -- reject it whenever "visibility" says anything other than
+    // "public". There is deliberately no converse check: a public corpus is
+    // free to omit the row (this repository's own corpus-a does).
+    const sourceUrlRow = characteristics.get('source url')
+    const visibilityRow = characteristics.get('visibility')
+    if (sourceUrlRow && visibilityRow?.value !== 'public') {
+      findings.push({ path: file.path, line: sourceUrlRow.line, ruleId: `${RULE_ID}:source-url-not-public` })
     }
   }
 

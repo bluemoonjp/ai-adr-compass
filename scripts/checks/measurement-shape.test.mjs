@@ -136,3 +136,33 @@ test('the generic placeholder "ADR-NNNN" (not digits) is never flagged as a reco
   const { findings } = run({ files: [file(withPlaceholder)] })
   assert.ok(!findings.some((f) => f.ruleId === 'measurement-shape:record-id'))
 })
+
+test('a public corpus with a source url row: no findings', () => {
+  const withUrl = CLEAN.replace(
+    '| record count | 3 |',
+    '| record count | 3 |\n| source url | https://github.com/some-org/some-repo/tree/main/docs/adr |',
+  )
+  assert.deepEqual(run({ files: [file(withUrl)] }), { findings: [] })
+})
+
+test('a public corpus with no source url row: no findings (this repository\'s own corpus-a has none)', () => {
+  assert.deepEqual(run({ files: [file(CLEAN)] }), { findings: [] })
+})
+
+test('a private corpus with a source url row: source-url-not-public, since that row is exactly what an anonymized corpus must never carry', () => {
+  const bad = CLEAN.replace('| visibility | public |', '| visibility | private |').replace(
+    '| record count | 3 |',
+    '| record count | 3 |\n| source url | https://github.com/some-org/some-private-sounding-repo |',
+  )
+  const { findings } = run({ files: [file(bad)] })
+  assert.ok(findings.some((f) => f.ruleId === 'measurement-shape:source-url-not-public'))
+})
+
+test('a source url whose path contains an ADR-NNNN-shaped segment is rejected as a record-id leak, intentionally -- "source url" must name the corpus directory, not a specific record', () => {
+  const bad = CLEAN.replace(
+    '| record count | 3 |',
+    '| record count | 3 |\n| source url | https://github.com/some-org/some-repo/tree/main/docs/adr-0001 |',
+  )
+  const { findings } = run({ files: [file(bad)] })
+  assert.ok(findings.some((f) => f.ruleId === 'measurement-shape:record-id'))
+})

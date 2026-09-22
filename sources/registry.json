@@ -58,6 +58,22 @@
       "role": "published-static",
       "tools": ["general"],
       "approval": { "decidedBy": "human", "on": "2026-09-22" }
+    },
+    {
+      "id": "measurement-corpus-b",
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-b.md",
+      "method": "md5",
+      "role": "published-static",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22" }
+    },
+    {
+      "id": "measurement-corpus-c",
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-c.md",
+      "method": "md5",
+      "role": "published-static",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22" }
     }
   ]
 }

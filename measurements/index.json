@@ -7,6 +7,22 @@
       "corpus": "corpus-a",
       "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-a.md",
       "anchor": "measurement-corpus-a"
+    },
+    {
+      "file": "measurements/2026-09-22-corpus-b.md",
+      "sha256": "0608684b1e0a00bb41bf8c4371eafd9a4c3d4d8f9e121c57fd584290cd55474d",
+      "publishedOn": "2026-09-22",
+      "corpus": "corpus-b",
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-b.md",
+      "anchor": "measurement-corpus-b"
+    },
+    {
+      "file": "measurements/2026-09-22-corpus-c.md",
+      "sha256": "813b24fe035c48a8ba1d4012136c6066cfc3df7d0b160b1e47625eda927e7e24",
+      "publishedOn": "2026-09-22",
+      "corpus": "corpus-c",
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-c.md",
+      "anchor": "measurement-corpus-c"
     }
   ]
 }
