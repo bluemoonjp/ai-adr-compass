@@ -172,6 +172,15 @@
       "enforces": []
     },
     {
+      "id": "registry-check",
+      "script": "scripts/checks/registry-check.mjs",
+      "blocking": true,
+      "fast": true,
+      "fixture": true,
+      "protects": "sources/registry.json must validate against its JSON Schema with no duplicate anchor id, every id in sources/baseline.json must resolve to a registered anchor, every covers host must share its anchor's eTLD+1, and every non-other source host cited by practices/, antipatterns/, and adapters/ must be covered by a registered anchor, since an anchor nothing approved or a host nothing tracks lets a source drift without the weekly patrol ever seeing it.",
+      "enforces": []
+    },
+    {
       "id": "freshness-report",
       "script": "scripts/checks/freshness-report.mjs",
       "blocking": false,

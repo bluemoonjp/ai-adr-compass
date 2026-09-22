@@ -6,6 +6,9 @@
       "method": "etag",
       "role": "source",
       "tools": ["general"],
+      "covers": [
+        { "host": "www.infoq.com", "reason": "InfoQ articles (e.g. practices/0001's Pureur & Bittner source) are served from www.infoq.com while this anchor tracks the section's aggregate feed at feed.infoq.com" }
+      ],
       "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
     },
     {

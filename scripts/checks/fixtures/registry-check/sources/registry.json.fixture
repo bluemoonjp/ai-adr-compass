@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "id": "bad-anchor",
+      "url": "https://docs.example.com/llms.txt",
+      "method": "md5",
+      "role": "source",
+      "tools": ["general"],
+      "approval": {}
+    },
+    {
+      "id": "bad-anchor",
+      "url": "https://other.example.org/feed",
+      "method": "etag",
+      "role": "control-static",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-01-01" },
+      "covers": [{ "host": "unrelated-domain.test", "reason": "wrong eTLD+1, kept here as a fixture" }]
+    }
+  ]
+}

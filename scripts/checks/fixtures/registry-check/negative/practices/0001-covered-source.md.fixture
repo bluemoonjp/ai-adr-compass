@@ -1,0 +1,21 @@
+---
+id: "0001"
+title: Sample practice with a covered source
+status: active
+topic: adr-scope
+applies_to:
+  - general
+rule: A sample rule used only to exercise registry-check's host-coverage fixture.
+license: CC-BY-4.0
+sources:
+  - url: https://uncovered.example.net/docs
+    kind: primary
+    confidence: verified
+    verified_on: "2026-01-01"
+    summary: A sample summary.
+    quote: "A sample quote."
+---
+
+## Why
+
+Sample rationale.
