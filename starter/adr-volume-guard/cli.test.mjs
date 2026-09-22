@@ -79,5 +79,10 @@ test('cli.mjs docs/adr --dates <path> (flags before the positional directory) st
   writeFileSync(datesPath, JSON.stringify({}))
   const stdout = execFileSync('node', [cliPath, '--dates', datesPath, 'docs/adr', '--json'], { cwd: root, encoding: 'utf8' })
   const result = JSON.parse(stdout)
-  assert.equal(result.count, 5)
+  // Not hardcoded to this repository's current docs/adr/ count: what matters
+  // here is that the directory argument was found at all (a misparse would
+  // instead try to read datesPath's own directory and throw ENOTDIR).
+  const expected = JSON.parse(execFileSync('node', [cliPath, 'docs/adr', '--json'], { cwd: root, encoding: 'utf8' }))
+  assert.equal(result.count, expected.count)
+  assert.ok(result.count > 0)
 })

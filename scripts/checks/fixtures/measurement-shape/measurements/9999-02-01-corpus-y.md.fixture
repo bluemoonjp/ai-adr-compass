@@ -1,0 +1,22 @@
+# Measurement: corpus-y
+
+Published: 2026-02-01
+
+## Corpus characteristics
+
+| field | value |
+| --- | --- |
+| visibility | public |
+| record count | 3 |
+| repository | some-private-repo-name |
+
+Status: accepted
+
+## Decision Log
+
+Some prose that should never appear here, citing ADR-0042 directly.
+
+## Volume
+
+records: 3 (dates resolved: 3)
+unresolved references (always significant, regardless of any threshold): 0

@@ -34,7 +34,7 @@ A weekly patrol proposes updates against primary sources; a human approves every
 
 ### License
 
-Documentation (practices, antipatterns, adapters, docs, and this README's prose) is licensed under [CC BY 4.0](LICENSE-DOCS). Code, scripts, schemas, templates, and configuration are licensed under [MIT](LICENSE). Paths not listed in either place are MIT. Short verbatim quotations belong to their original authors and are reproduced only for verification.
+Documentation (practices, antipatterns, adapters, docs, measurements, and this README's prose) is licensed under [CC BY 4.0](LICENSE-DOCS). Code, scripts, schemas, templates, and configuration are licensed under [MIT](LICENSE). Paths not listed in either place are MIT. Short verbatim quotations belong to their original authors and are reproduced only for verification.
 
 ### Contributing
 
@@ -76,7 +76,7 @@ _`practices/*.md` から `pnpm gen` で生成。このブロックは編集し�
 
 ### License
 
-文書(practices、antipatterns、adapters、docs、この README の本文)は [CC BY 4.0](LICENSE-DOCS)、コード・スクリプト・スキーマ・テンプレート・設定は [MIT](LICENSE) です。どちらにも挙げていないパスは MIT です。短い逐語引用は原著作者に帰属し、検証のためにのみ掲載します。
+文書(practices、antipatterns、adapters、docs、measurements、この README の本文)は [CC BY 4.0](LICENSE-DOCS)、コード・スクリプト・スキーマ・テンプレート・設定は [MIT](LICENSE) です。どちらにも挙げていないパスは MIT です。短い逐語引用は原著作者に帰属し、検証のためにのみ掲載します。
 
 ### Contributing
 

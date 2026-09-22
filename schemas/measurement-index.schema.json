@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "measurement-index.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["measurements"],
+  "properties": {
+    "measurements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "sha256", "publishedOn", "corpus", "url"],
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "Repo-relative path of the published measurement file.",
+            "pattern": "^measurements/\\d{4}-\\d{2}-\\d{2}-corpus-[a-z0-9]+\\.md$"
+          },
+          "sha256": {
+            "type": "string",
+            "description": "Digest of the file's CRLF-normalized text, the same normalization scripts/lib/runner.mjs applies to every check's input -- not a pin of the exact bytes a client fetches from url.",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "publishedOn": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "corpus": { "type": "string", "pattern": "^corpus-[a-z0-9]+$" },
+          "url": {
+            "type": "string",
+            "description": "The raw.githubusercontent.com URL a practice or antipattern cites as its source.",
+            "pattern": "^https://\\S+$"
+          },
+          "anchor": {
+            "type": "string",
+            "description": "Optional: the sources/registry.json anchor id (role: published-static) that watches this file for a post-publication change.",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "measurements": [
+    {
+      "file": "measurements/9999-01-01-corpus-x.md",
+      "sha256": "b475d682ae8482566b828533564214a7a1c5ee15fbd9f8f26e36ab05264db5c2",
+      "publishedOn": "2026-01-01",
+      "corpus": "corpus-x",
+      "url": "https://raw.githubusercontent.com/example-owner/example-repo/main/measurements/9999-01-01-corpus-x.md"
+    }
+  ]
+}

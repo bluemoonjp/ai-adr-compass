@@ -1,0 +1,19 @@
+---
+id: "9002"
+title: Sample practice citing an unlisted measurement
+status: active
+topic: adr-scope
+applies_to: [general]
+rule: A sample rule.
+license: CC-BY-4.0
+sources:
+  - url: https://raw.githubusercontent.com/example-owner/example-repo/main/measurements/9999-12-31-corpus-z.md
+    kind: primary
+    confidence: derived
+    verified_on: "2026-01-01"
+    summary: A sample summary citing a measurement file that index.json never lists.
+---
+
+## Why
+
+Sample body.

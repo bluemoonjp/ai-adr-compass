@@ -5,6 +5,8 @@
 - A correction, a source update, or a new practice, antipattern, or adapter
   under `practices/`, `antipatterns/`, or `adapters/`, backed by a link to a
   primary source.
+- A new measurement under `measurements/`, published through
+  `.claude/skills/adr-compass-measure/SKILL.md`'s procedure.
 - A fix to a check, script, or workflow under `scripts/` or
   `.github/workflows/`.
 - A documentation fix to `README.md`, `docs/adr/`, or `docs/maintain/`.
