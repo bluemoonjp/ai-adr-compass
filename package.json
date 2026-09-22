@@ -11,7 +11,9 @@
     "check": "node scripts/check.mjs",
     "check:fast": "node scripts/check.mjs --fast",
     "test": "node --test",
-    "gen": "node scripts/gen.mjs"
+    "gen": "node scripts/gen.mjs",
+    "patrol": "node scripts/patrol.mjs",
+    "patrol:health": "node scripts/patrol-health.mjs"
   },
   "devDependencies": {
     "ajv": "8.17.1",

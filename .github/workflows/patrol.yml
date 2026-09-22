@@ -1,0 +1,141 @@
+name: Patrol
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: patrol
+  cancel-in-progress: false
+
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-pnpm
+
+      - name: Checkout patrol-state
+        id: checkout-patrol-state
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: patrol-state
+          path: patrol-state
+
+      # Only runs the first time this workflow ever executes against a
+      # repository that hasn't created patrol-state by hand yet. Kept even
+      # though this repository already created the branch ahead of merging
+      # this workflow.
+      - name: Create patrol-state branch (first run only)
+        if: steps.checkout-patrol-state.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          rm -rf patrol-state-init
+          gh repo clone "${GITHUB_REPOSITORY}" patrol-state-init -- --depth 1
+          cd patrol-state-init
+          git checkout --orphan patrol-state
+          git rm -rf --cached . > /dev/null 2>&1 || true
+          echo '{"sources": {}}' > state.json
+          git add state.json
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "patrol-state: initialize with an empty state.json"
+          git push origin HEAD:refs/heads/patrol-state
+          mkdir -p ../patrol-state
+          cp state.json ../patrol-state/state.json
+          cd ..
+          rm -rf patrol-state-init
+
+      # Counted before the new Issue below is created, or every week would
+      # count 2 open weekly issues and always self-report degraded.
+      - name: Count open weekly patrol issues
+        id: count-issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COUNT=$(gh issue list --repo "${GITHUB_REPOSITORY}" --label origin:bot --label area:patrol --state open --json number --jq 'length')
+          echo "count=${COUNT}" >> "$GITHUB_OUTPUT"
+
+      - name: Run patrol
+        run: node scripts/patrol.mjs --state patrol-state/state.json --open-weekly-issues "${{ steps.count-issues.outputs.count }}"
+
+      - name: Check external links
+        id: external-links
+        continue-on-error: true
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --exclude-path scripts/checks/fixtures
+            --exclude-path node_modules
+            '**/*.md' '**/*.template'
+          format: json
+          output: lychee-report.json
+          fail: false
+          failIfEmpty: false
+          jobSummary: false
+
+      - name: Render issue body
+        id: render
+        run: |
+          node scripts/patrol/issue-body.mjs --state patrol-state/state.json --links-json lychee-report.json > issue-body.md
+          echo "week=$(date -u +%G-W%V)" >> "$GITHUB_OUTPUT"
+
+      # Committed unconditionally, even with no source changes: checkedAt
+      # always advances, so this is always a real diff, and it doubles as a
+      # liveness signal.
+      - name: Commit patrol-state
+        working-directory: patrol-state
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "patrol: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
+
+      - name: Create weekly issue
+        id: new-issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          URL=$(gh issue create --repo "${GITHUB_REPOSITORY}" \
+            --title "Weekly patrol ${{ steps.render.outputs.week }}" \
+            --label type:ops --label origin:bot --label area:patrol \
+            --body-file issue-body.md)
+          echo "url=${URL}" >> "$GITHUB_OUTPUT"
+          echo "number=${URL##*/}" >> "$GITHUB_OUTPUT"
+
+      - name: Close previous weekly issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEW_NUMBER: ${{ steps.new-issue.outputs.number }}
+          NEW_URL: ${{ steps.new-issue.outputs.url }}
+        run: |
+          set -euo pipefail
+          gh issue list --repo "${GITHUB_REPOSITORY}" --label origin:bot --label area:patrol --state open --json number --jq '.[].number' |
+            while read -r NUMBER; do
+              if [ "$NUMBER" != "$NEW_NUMBER" ]; then
+                gh issue close "$NUMBER" --repo "${GITHUB_REPOSITORY}" --comment "Superseded by ${NEW_URL}"
+              fi
+            done
+
+  health:
+    needs: patrol
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: patrol-state
+          path: patrol-state
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/patrol-health.mjs --state patrol-state/state.json

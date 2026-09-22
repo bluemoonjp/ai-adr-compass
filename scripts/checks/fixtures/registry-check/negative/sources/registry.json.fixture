@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "id": "clean-anchor",
+      "url": "https://uncovered.example.net/llms.txt",
+      "method": "md5",
+      "role": "source",
+      "tools": ["general"],
+      "covers": [{ "host": "platform.example.net", "reason": "same product, different subdomain" }],
+      "approval": { "decidedBy": "human", "on": "2026-01-01", "probe": { "on": "2026-01-01", "volatile": false } }
+    }
+  ]
+}
