@@ -1,0 +1,26 @@
+{
+  "skill_name": "adr-record",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We just decided to switch our primary database from Postgres to a distributed NewSQL engine to handle 10x write throughput; reversing this would mean rewriting our data layer and re-running a multi-week migration. Should this become an ADR, and if so draft it.",
+      "expected_output": "The skill judges this Record (costly to reverse, shapes a key abstraction), drafts a new docs/adr/NNNN-*.md from adr.md.template with exactly one Status: line and one Date: line, Context/Decision/Consequences each graded Complete before being left in the file, and does not delete or edit any other existing ADR file.",
+      "expectations": [
+        "The write-threshold judgment is stated as Record, Inline, or Discard, not left implicit",
+        "The resulting file follows adr.md.template's exact shape: Status:, Issue:, Date: lines and Context/Decision/Consequences H2s only",
+        "Every section is graded Complete/Missing/Unsupported before the skill considers the record finished",
+        "No existing docs/adr/*.md file is deleted or has its Status changed as a side effect"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our whole docs/adr/ directory has grown to 40 records over the past year and I want to know which ones are stale, which cite each other too much, and whether we're writing them too fast. Can you look at the corpus and tell me what to do with it?",
+      "expected_output": "The skill recognizes this is a corpus-wide audit -- volume, hub concentration, staleness across many records -- not a single-record judgment, and declines to draft or gate any one record, instead pointing to adr-corpus-review.",
+      "expectations": [
+        "The skill does not attempt to triage, draft, or grade any single ADR file",
+        "The skill states this request belongs to adr-corpus-review, by name",
+        "No docs/adr/*.md file is created, edited, or deleted"
+      ]
+    }
+  ]
+}

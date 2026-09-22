@@ -1,7 +1,5 @@
 import {
   applyBlock,
-  INSTRUCTION_FILE_SKILL_DIR,
-  INSTRUCTION_FILE_TEMPLATE_NAMES,
   listOrphanReferenceNames,
   listSkillFiles,
   parseAntipatternDetails,
@@ -15,6 +13,12 @@ import {
   renderReferenceFile,
   renderTemplateReferenceReadme,
   stripAdaptersNote,
+  TEMPLATE_FILE,
+  TEMPLATE_SKILL_DIR,
+  TEMPLATES_DIR,
+  VOLUME_GUARD_FILE,
+  VOLUME_GUARD_SKILL_DIR,
+  VOLUME_GUARD_SOURCE_DIR,
 } from '../gen.mjs'
 
 const RULE_ID = 'generated-fresh'
@@ -28,8 +32,10 @@ function normalize(text) {
 }
 
 // The .md files directly inside dirPath — depth-1 only, so a nested
-// directory such as a skill's references/templates/ (a different
-// generator's output, syncInstructionFileTemplates) is never included.
+// directory such as a skill's references/templates/ or
+// references/adr-volume-guard/ (a different generator's output --
+// syncTemplatesIntoSkill / syncVolumeGuardIntoSkill in scripts/gen.mjs) is
+// never included.
 function directChildMdNames(files, dirPath) {
   const prefix = `${dirPath}/`
   const names = []
@@ -38,6 +44,22 @@ function directChildMdNames(files, dirPath) {
     const rest = f.path.slice(prefix.length)
     if (rest.includes('/') || !rest.endsWith('.md')) continue
     names.push(rest.slice(0, -'.md'.length))
+  }
+  return names
+}
+
+// Every direct child file's basename under dirPath, extension included --
+// the same depth-1-only discipline as directChildMdNames, but for a flat
+// file list (templates/*.template(.json), starter/adr-volume-guard/*)
+// instead of a topic-name list.
+function directChildFileNames(files, dirPath) {
+  const prefix = `${dirPath}/`
+  const names = []
+  for (const f of files) {
+    if (!f.path.startsWith(prefix)) continue
+    const rest = f.path.slice(prefix.length)
+    if (rest.includes('/')) continue
+    names.push(rest)
   }
   return names
 }
@@ -122,12 +144,14 @@ export function run({ files }) {
     }
   }
 
-  const instructionFileSkill = files.find((f) => f.path === `${INSTRUCTION_FILE_SKILL_DIR}/SKILL.md`)
-  if (instructionFileSkill) {
-    for (const name of INSTRUCTION_FILE_TEMPLATE_NAMES) {
-      const sourceFile = files.find((f) => f.path === `templates/${name}`)
-      if (!sourceFile) continue
-      const targetPath = `${INSTRUCTION_FILE_SKILL_DIR}/references/templates/${name}`
+  const templateSkill = files.find((f) => f.path === `${TEMPLATE_SKILL_DIR}/SKILL.md`)
+  if (templateSkill) {
+    const sourceTemplateFiles = files.filter(
+      (f) => f.path.startsWith(`${TEMPLATES_DIR}/`) && !f.path.slice(TEMPLATES_DIR.length + 1).includes('/') && TEMPLATE_FILE.test(f.path),
+    )
+    for (const sourceFile of sourceTemplateFiles) {
+      const name = sourceFile.path.slice(TEMPLATES_DIR.length + 1)
+      const targetPath = `${TEMPLATE_SKILL_DIR}/references/templates/${name}`
       const targetFile = files.find((f) => f.path === targetPath)
       const expected = normalize(stripAdaptersNote(sourceFile.text))
       const actual = targetFile ? normalize(targetFile.text) : null
@@ -137,13 +161,52 @@ export function run({ files }) {
       }
     }
 
-    const readmePath = `${INSTRUCTION_FILE_SKILL_DIR}/references/templates/README.md`
+    const readmePath = `${TEMPLATE_SKILL_DIR}/references/templates/README.md`
     const readmeTemplateFile = files.find((f) => f.path === readmePath)
     const actualReadme = readmeTemplateFile ? normalize(readmeTemplateFile.text) : null
     const expectedReadme = normalize(renderTemplateReferenceReadme())
     if (actualReadme !== expectedReadme) {
       findings.push({ path: readmePath, line: 1, ruleId: `${RULE_ID}:reference-template-stale` })
       notices.push(`${RULE_ID}: ${readmePath} is stale — run: pnpm gen`)
+    }
+
+    const templateTargetDir = `${TEMPLATE_SKILL_DIR}/references/templates`
+    const expectedTemplateNames = new Set([...sourceTemplateFiles.map((f) => f.path.slice(TEMPLATES_DIR.length + 1)), 'README.md'])
+    for (const existingName of directChildFileNames(files, templateTargetDir)) {
+      if (!expectedTemplateNames.has(existingName)) {
+        const orphanPath = `${templateTargetDir}/${existingName}`
+        findings.push({ path: orphanPath, line: 1, ruleId: `${RULE_ID}:reference-template-orphan` })
+        notices.push(`${RULE_ID}: ${orphanPath} is an orphaned reference file — run: pnpm gen`)
+      }
+    }
+  }
+
+  const volumeGuardSkill = files.find((f) => f.path === `${VOLUME_GUARD_SKILL_DIR}/SKILL.md`)
+  if (volumeGuardSkill) {
+    const sourcePrefix = `${VOLUME_GUARD_SOURCE_DIR}/`
+    const sourceVolumeGuardFiles = files.filter(
+      (f) => f.path.startsWith(sourcePrefix) && !f.path.slice(sourcePrefix.length).includes('/') && VOLUME_GUARD_FILE.test(f.path),
+    )
+    for (const sourceFile of sourceVolumeGuardFiles) {
+      const name = sourceFile.path.slice(sourcePrefix.length)
+      const targetPath = `${VOLUME_GUARD_SKILL_DIR}/references/adr-volume-guard/${name}`
+      const targetFile = files.find((f) => f.path === targetPath)
+      const expected = normalize(sourceFile.text)
+      const actual = targetFile ? normalize(targetFile.text) : null
+      if (actual !== expected) {
+        findings.push({ path: targetPath, line: 1, ruleId: `${RULE_ID}:reference-volume-guard-stale` })
+        notices.push(`${RULE_ID}: ${targetPath} is stale — run: pnpm gen`)
+      }
+    }
+
+    const volumeGuardTargetDir = `${VOLUME_GUARD_SKILL_DIR}/references/adr-volume-guard`
+    const expectedVolumeGuardNames = new Set(sourceVolumeGuardFiles.map((f) => f.path.slice(sourcePrefix.length)))
+    for (const existingName of directChildFileNames(files, volumeGuardTargetDir)) {
+      if (!expectedVolumeGuardNames.has(existingName)) {
+        const orphanPath = `${volumeGuardTargetDir}/${existingName}`
+        findings.push({ path: orphanPath, line: 1, ruleId: `${RULE_ID}:reference-volume-guard-orphan` })
+        notices.push(`${RULE_ID}: ${orphanPath} is an orphaned reference file — run: pnpm gen`)
+      }
     }
   }
 

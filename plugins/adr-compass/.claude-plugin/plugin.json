@@ -1,0 +1,7 @@
+{
+  "name": "adr-compass",
+  "version": "0.1.0",
+  "description": "Per-record and per-corpus skills for writing and auditing Architecture Decision Records, sourced from ai-adr-compass's practices and antipatterns.",
+  "license": "MIT",
+  "author": { "name": "bluemoonjp" }
+}

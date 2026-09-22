@@ -123,7 +123,7 @@
       "blocking": true,
       "fast": true,
       "fixture": true,
-      "protects": "docs/maintain/authoring.md's generated check table, practices/index.md, and README.md's generated blocks must match what pnpm gen produces from checks.json and practices/*.md, since a hand-edited or missing copy silently drifts from the source it claims to summarize.",
+      "protects": "docs/maintain/authoring.md's generated check table, practices/index.md, README.md's generated blocks, every plugin skill's topic references/, adr-record's copy of templates/, and adr-corpus-review's copy of starter/adr-volume-guard/ must all match what pnpm gen produces (with no leftover file for a source that no longer exists), since a hand-edited, missing, or orphaned copy silently drifts from the source it claims to summarize.",
       "enforces": []
     },
     {

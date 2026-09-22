@@ -1,0 +1,26 @@
+{
+  "skill_name": "adr-corpus-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's our docs/adr/ directory with 25 records built up over 8 months. Audit the corpus: how big is it, is anything hub-concentrated or bursty, and what should we keep, merge, retire, or promote?",
+      "expected_output": "The skill runs references/adr-volume-guard/cli.mjs against the given docs/adr/ path before making any claim, reports a corpus-wide distribution table (count, fan-in/fan-out total and distinct, generation rate, staleness as p50/p90/p95/max) as its own table, separately reports a per-record judgment table using only Keep/Merge/Retire/Promote for records the distribution flagged, and states the instrument's own stated limits (decision date is not review recency; only the literal ADR-NNNN citation form is counted).",
+      "expectations": [
+        "references/adr-volume-guard/cli.mjs is actually run against the corpus before any distribution number is stated",
+        "The corpus-wide distribution table and the per-record judgment table are two separate tables, not merged into one",
+        "Every per-record judgment uses exactly one of Keep, Merge, Retire, Promote",
+        "The instrument's own stated limitations are named, not silently assumed away"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We're about to decide to move our CI from Jenkins to GitHub Actions -- it's a big change and hard to reverse. Should we write an ADR for it?",
+      "expected_output": "The skill recognizes this is a single, not-yet-written decision -- a per-record triage and drafting judgment, not a corpus-wide audit -- and declines to run the volume instrument or judge an existing corpus, instead pointing to adr-record.",
+      "expectations": [
+        "The skill does not run the volume instrument or report a corpus-wide distribution",
+        "The skill states this request belongs to adr-record, by name",
+        "No existing docs/adr/*.md file's Status is judged Keep/Merge/Retire/Promote as a side effect"
+      ]
+    }
+  ]
+}

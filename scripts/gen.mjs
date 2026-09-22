@@ -17,10 +17,20 @@ const PRACTICE_FILENAME = /^(\d{4})-[a-z0-9-]+\.md$/
 const SKILL_MD_PATH = /^plugins\/[^/]+\/skills\/[^/]+\/SKILL\.md$/
 const CC_BY_URL = 'https://creativecommons.org/licenses/by/4.0/'
 const MIT_URL = 'https://opensource.org/license/mit/'
-// The only skill that currently needs starter templates as reference
-// material; generalize this mapping if a second skill needs one.
-export const INSTRUCTION_FILE_SKILL_DIR = 'plugins/adr-compass/skills/adr-compass-instruction-file'
-export const INSTRUCTION_FILE_TEMPLATE_NAMES = ['AGENTS.md.template', 'CLAUDE.md.template']
+// adr-record copies templates/ (prose starter files) into its own
+// references/; adr-corpus-review copies starter/adr-volume-guard/ (the
+// runnable instrument) into its own -- an install only ever copies
+// plugins/adr-compass/, never the repository root, so a skill's own
+// instructions can only ever point at a path that exists inside the
+// installed plugin.
+export const TEMPLATES_DIR = 'templates'
+export const TEMPLATE_SKILL_DIR = 'plugins/adr-compass/skills/adr-record'
+export const TEMPLATE_FILE = /\.template(?:\.json)?$/
+export const VOLUME_GUARD_SOURCE_DIR = 'starter/adr-volume-guard'
+export const VOLUME_GUARD_SKILL_DIR = 'plugins/adr-compass/skills/adr-corpus-review'
+// Runtime files only -- .test.mjs is dev-only and adds nothing to a
+// distributed copy a skill's own instructions run directly.
+export const VOLUME_GUARD_FILE = /^(?!.*\.test\.mjs$).+$/
 const ADAPTERS_NOTE_MARKER = "\n\nBefore copying, check this repository's [adapters/README.md]"
 
 function parseFrontmatteredFile(file) {
@@ -267,14 +277,68 @@ export function generateReferences(root) {
   }
 }
 
-function syncInstructionFileTemplates(root) {
-  const targetDir = path.join(root, INSTRUCTION_FILE_SKILL_DIR, 'references', 'templates')
+// { withFileTypes: true } + isFile() -- a plain readdirSync(dir).filter(regex)
+// would try to readFileSync() a matching *directory* name (VOLUME_GUARD_FILE
+// in particular matches almost anything that isn't *.test.mjs) and crash
+// with EISDIR; skip anything that isn't a real file instead.
+function listTemplateFilesFromDisk(root) {
+  const dir = path.join(root, TEMPLATES_DIR)
+  if (!existsSync(dir)) return []
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isFile() && TEMPLATE_FILE.test(e.name))
+    .map((e) => ({ name: e.name, text: readFileSync(path.join(dir, e.name), 'utf8') }))
+}
+
+// Removes any file under targetDir not named in expectedNames -- the
+// counterpart to generateReferences' own listOrphanReferenceNames/unlinkSync
+// a few lines above, applied here to a flat file list instead of a topic
+// list. Without this, a templates/ or starter/adr-volume-guard/ file that is
+// later renamed or removed leaves a stale, permanently-shipped copy behind
+// with nothing to prune it.
+function pruneOrphans(targetDir, expectedNames) {
+  for (const entry of readdirSync(targetDir, { withFileTypes: true })) {
+    if (entry.isFile() && !expectedNames.has(entry.name)) {
+      unlinkSync(path.join(targetDir, entry.name))
+    }
+  }
+}
+
+// Copies every templates/*.template(.json) file into adr-record's own
+// references/templates/ -- a no-op until that skill exists.
+function syncTemplatesIntoSkill(root) {
+  if (!existsSync(path.join(root, TEMPLATE_SKILL_DIR, 'SKILL.md'))) return
+  const targetDir = path.join(root, TEMPLATE_SKILL_DIR, 'references', 'templates')
   mkdirSync(targetDir, { recursive: true })
-  for (const name of INSTRUCTION_FILE_TEMPLATE_NAMES) {
-    const text = readFileSync(path.join(root, 'templates', name), 'utf8')
+  const entries = listTemplateFilesFromDisk(root)
+  for (const { name, text } of entries) {
     writeFileSync(path.join(targetDir, name), stripAdaptersNote(text).replace(/\r\n/g, '\n'))
   }
   writeFileSync(path.join(targetDir, 'README.md'), renderTemplateReferenceReadme())
+  pruneOrphans(targetDir, new Set([...entries.map((e) => e.name), 'README.md']))
+}
+
+function listVolumeGuardFilesFromDisk(root) {
+  const dir = path.join(root, VOLUME_GUARD_SOURCE_DIR)
+  if (!existsSync(dir)) return []
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isFile() && VOLUME_GUARD_FILE.test(e.name))
+    .map((e) => ({ name: e.name, text: readFileSync(path.join(dir, e.name), 'utf8') }))
+}
+
+// Copies starter/adr-volume-guard/'s runtime files into adr-corpus-review's
+// own references/adr-volume-guard/ -- a no-op until that skill exists. The
+// distributed instrument and the CI check (scripts/checks/volume-report.mjs)
+// already share starter/adr-volume-guard/'s own code; this is that same
+// source copied a second way, for an installed plugin to run directly.
+function syncVolumeGuardIntoSkill(root) {
+  if (!existsSync(path.join(root, VOLUME_GUARD_SKILL_DIR, 'SKILL.md'))) return
+  const targetDir = path.join(root, VOLUME_GUARD_SKILL_DIR, 'references', 'adr-volume-guard')
+  mkdirSync(targetDir, { recursive: true })
+  const entries = listVolumeGuardFilesFromDisk(root)
+  for (const { name, text } of entries) {
+    writeFileSync(path.join(targetDir, name), text.replace(/\r\n/g, '\n'))
+  }
+  pruneOrphans(targetDir, new Set(entries.map((e) => e.name)))
 }
 
 function main() {
@@ -298,9 +362,8 @@ function main() {
   writeFileSync(readmeAbs, nextReadme)
 
   generateReferences(root)
-  if (existsSync(path.join(root, INSTRUCTION_FILE_SKILL_DIR, 'SKILL.md'))) {
-    syncInstructionFileTemplates(root)
-  }
+  syncTemplatesIntoSkill(root)
+  syncVolumeGuardIntoSkill(root)
 }
 
 if (process.argv[1] && process.argv[1] === fileURLToPath(import.meta.url)) {

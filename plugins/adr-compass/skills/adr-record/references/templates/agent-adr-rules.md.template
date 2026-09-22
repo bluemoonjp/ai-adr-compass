@@ -1,0 +1,7 @@
+## ADR gate
+
+Before writing a new Architecture Decision Record, triage: write one only when reversing the decision would let someone repeat the mistake, and reconstructing why it was made would need an incident review or a long investigation (`docs/adr/README.md`).
+
+Every ADR has exactly one `Status:` line (`accepted`, `superseded by ADR-NNNN`, `amended by ADR-NNNN`, or `withdrawn`) and exactly one `Date:` line (`YYYY-MM-DD`, the date decided). Never delete an ADR file; mark it `withdrawn`, `superseded`, or `amended` instead.
+
+Periodically measure the corpus as a whole — record count, fan-in, fan-out, generation rate, staleness — not just each new record's own compliance.

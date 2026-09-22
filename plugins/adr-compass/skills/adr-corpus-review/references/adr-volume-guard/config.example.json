@@ -1,0 +1,10 @@
+{
+  "thresholds": {
+    "fanOutTotal": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null },
+    "fanOutDistinct": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null },
+    "fanInTotal": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null },
+    "fanInDistinct": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null },
+    "paceWindow7": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null },
+    "staleDays": { "operator": ">", "value": null, "derivedFrom": null, "measuredOn": null }
+  }
+}
