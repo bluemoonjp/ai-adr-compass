@@ -1,0 +1,8 @@
+[
+  { "id": "windows-profile-path", "pattern": "[A-Za-z]:\\\\Users\\\\[^\\\\/\"'\\s]+" },
+  { "id": "home-path", "pattern": "/home/[^/\"'\\s]+" },
+  { "id": "users-path", "pattern": "/Users/[^/\"'\\s]+" },
+  { "id": "file-uri", "pattern": "file:///" },
+  { "id": "unc-path", "pattern": "\\\\\\\\[A-Za-z0-9_.-]+\\\\[^\\\\/\"'\\s]*" },
+  { "id": "email-address", "pattern": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}" }
+]

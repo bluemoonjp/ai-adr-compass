@@ -1,0 +1,7 @@
+# Authoring
+
+<!-- gen:start -->
+| Check | Blocking | Enforces | What it protects |
+| --- | --- | --- | --- |
+| `also-does-not-exist` | yes |  | Something. |
+<!-- gen:end -->

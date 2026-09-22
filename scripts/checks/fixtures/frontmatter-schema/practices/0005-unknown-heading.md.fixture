@@ -1,0 +1,20 @@
+---
+id: "0005"
+title: Sample unknown heading
+status: active
+topic: adr-scope
+applies_to:
+  - general
+rule: A sample rule.
+license: CC-BY-4.0
+sources:
+  - url: https://example.invalid/source
+    kind: primary
+    confidence: unverified
+    verified_on: "2026-09-17"
+    summary: A sample summary.
+---
+
+## Rule
+
+This heading duplicates the frontmatter rule field and is not in the allowed set.

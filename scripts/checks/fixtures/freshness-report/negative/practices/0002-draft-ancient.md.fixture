@@ -1,0 +1,21 @@
+---
+id: "0002"
+title: Sample ancient draft practice
+status: draft
+topic: adr-scope
+applies_to:
+  - general
+rule: A draft is excluded from freshness checking regardless of verified_on age.
+license: CC-BY-4.0
+sources:
+  - url: https://example.com/docs
+    kind: primary
+    confidence: verified
+    verified_on: "2000-01-01"
+    summary: A sample summary.
+    quote: "A sample quote."
+---
+
+## Why
+
+Sample rationale.

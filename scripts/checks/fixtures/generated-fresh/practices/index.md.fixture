@@ -1,0 +1,9 @@
+# Practice index
+
+Generated from `practices/*.md` by `pnpm gen`; do not edit.
+
+| ID | Rule | Topic | Applies to | Verified on |
+| --- | --- | --- | --- | --- |
+| 9999 | This row is stale and does not match what pnpm gen would produce. | adr-scope | general | 2026-01-01 |
+
+This table's content is drawn from `practices/`, licensed under [CC BY 4.0](../LICENSE-DOCS).

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skill-frontmatter.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{1,64}$",
+      "description": "Must match the skill's parent directory name."
+    },
+    "description": { "type": "string", "maxLength": 1024 },
+    "license": { "type": "string" },
+    "compatibility": { "type": "string" },
+    "metadata": { "type": "object" },
+    "allowed-tools": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

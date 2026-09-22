@@ -1,0 +1,16 @@
+{
+  "config": {
+    "default": true,
+    // Prose here wraps at the sentence, not at a fixed column; a line-length
+    // limit would fight every ADR and practice body.
+    "MD013": false,
+    // README.md pairs an English and a 日本語 section, each with its own
+    // "What this is" / "Status" / "License" headings under a different parent.
+    "MD024": { "siblings_only": true },
+    // CLAUDE.md's first line is deliberately the @AGENTS.md import syntax
+    // (instruction-limits enforces this), not a heading.
+    "MD041": false
+  },
+  "globs": ["**/*.md", "**/*.template"],
+  "ignores": ["scripts/checks/fixtures/**", "node_modules/**"]
+}

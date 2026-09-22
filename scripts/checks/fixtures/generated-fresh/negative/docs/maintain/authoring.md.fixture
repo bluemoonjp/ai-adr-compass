@@ -1,0 +1,7 @@
+# Sample
+
+<!-- gen:start -->
+| Check | Blocking | Enforces | What it protects |
+| --- | --- | --- | --- |
+| `sample-check` | yes | 0001 | Sample files must contain the word sample, since this is a fixture for generated-fresh. |
+<!-- gen:end -->

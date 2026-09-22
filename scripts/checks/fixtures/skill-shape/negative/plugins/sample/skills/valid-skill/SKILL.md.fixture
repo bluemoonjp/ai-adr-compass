@@ -1,0 +1,7 @@
+---
+name: valid-skill
+description: A sample skill that follows the shape.
+license: MIT
+---
+
+Body. See [more detail](references/detail.md), [support](mailto:support@example.com), [call](tel:+15551234567), and [inline](data:text/plain;base64,AA==).

@@ -1,0 +1,42 @@
+name: Public surface
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  check-paste:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan pasted body for generic private-information shapes
+        id: scan
+        env:
+          BODY: ${{ github.event.comment.body || github.event.issue.body || github.event.pull_request.body }}
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const patterns = JSON.parse(readFileSync("scripts/checks/data/forbidden-patterns.json", "utf8"));
+            const body = process.env.BODY ?? "";
+            const hit = patterns.some((p) => new RegExp(p.pattern).test(body));
+            console.log(hit ? "match" : "clean");
+            process.exitCode = hit ? 1 : 0;
+          ' > /tmp/scan-result.txt 2>&1 || true
+          echo "result=$(tail -n1 /tmp/scan-result.txt)" >> "$GITHUB_OUTPUT"
+      - name: Flag needs-redaction
+        if: steps.scan.outputs.result == 'match'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          gh api "repos/${{ github.repository }}/issues/${NUMBER}/labels" -f "labels[]=needs-redaction"
+          gh api "repos/${{ github.repository }}/issues/${NUMBER}/comments" -f "body=この本文に、固有情報らしき文字列(パス・メールアドレス等)と一致する箇所が見つかりました。内容を確認し、必要なら編集または削除してください。一致した文字列や行番号はこのコメントには含めていません。"

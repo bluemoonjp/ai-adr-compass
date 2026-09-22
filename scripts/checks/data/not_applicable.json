@@ -1,0 +1,3 @@
+{
+  "practices/0001": "No automated check can judge whether a specific decision clears the architectural-significance threshold (business value, a key abstraction, a costly-to-reverse choice); enforcement is left to review, since that requires understanding the decision's own stakes, not the ADR file's structure."
+}

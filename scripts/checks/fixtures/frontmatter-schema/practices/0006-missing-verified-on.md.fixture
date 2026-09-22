@@ -1,0 +1,19 @@
+---
+id: "0006"
+title: Sample missing verified_on
+status: active
+topic: adr-scope
+applies_to:
+  - general
+rule: A sample rule.
+license: CC-BY-4.0
+sources:
+  - url: https://example.invalid/source
+    kind: primary
+    confidence: unverified
+    summary: A sample summary.
+---
+
+## Why
+
+Sample rationale.

@@ -1,0 +1,31 @@
+---
+id: "0001"
+title: Sample clean antipattern
+status: active
+topic: adr-scope
+applies_to:
+  - general
+rule: A sample rule for the clean antipattern fixture.
+license: CC-BY-4.0
+classification: harmful
+relates_to:
+  - "0007"
+sources:
+  - url: https://example.invalid/source
+    kind: research
+    confidence: unverified
+    verified_on: "2026-09-17"
+    summary: A sample summary.
+---
+
+## Symptom
+
+Sample symptom.
+
+## Cause
+
+Sample cause.
+
+## Remedy
+
+Sample remedy.
