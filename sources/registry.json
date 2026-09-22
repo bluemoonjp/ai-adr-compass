@@ -20,6 +20,22 @@
       "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
     },
     {
+      "id": "madr-releases",
+      "url": "https://github.com/adr/madr/releases.atom",
+      "method": "md5",
+      "role": "source",
+      "tools": ["madr"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
+    },
+    {
+      "id": "nygard-adr-post",
+      "url": "https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions",
+      "method": "md5",
+      "role": "source",
+      "tools": ["nygard"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22", "probe": { "on": "2026-09-22", "volatile": false } }
+    },
+    {
       "id": "control-static-rfc2119",
       "url": "https://www.rfc-editor.org/rfc/rfc2119.txt",
       "method": "md5",

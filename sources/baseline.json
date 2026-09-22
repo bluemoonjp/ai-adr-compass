@@ -1,4 +1,6 @@
 {
   "infoq-architecture-feed": { "etag": "\"1790035640754\"", "bytes": 27512, "acceptedOn": "2026-09-22" },
-  "ozimmer-feed": { "etag": "W/\"6aa51b54-30244\"", "bytes": 197188, "acceptedOn": "2026-09-22" }
+  "ozimmer-feed": { "etag": "W/\"6aa51b54-30244\"", "bytes": 197188, "acceptedOn": "2026-09-22" },
+  "madr-releases": { "md5": "ba71bd41df8ca8fc3de4996c1d9ca23c", "bytes": 16087, "acceptedOn": "2026-09-22" },
+  "nygard-adr-post": { "md5": "e9740bf40773483ff241caa58721b908", "bytes": 45800, "acceptedOn": "2026-09-22" }
 }
