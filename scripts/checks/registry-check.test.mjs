@@ -72,6 +72,16 @@ test('two anchors sharing an id are flagged as duplicates', () => {
   assert.ok(findings.some((f) => f.ruleId === 'registry-check:duplicate-id'))
 })
 
+test('a role:published-static anchor needs no approval.probe (unlike role:source)', () => {
+  const anchor = sourceAnchor({
+    id: 'measurement-corpus-a',
+    role: 'published-static',
+    approval: { decidedBy: 'human', on: '2026-01-01' },
+  })
+  const { findings } = run({ files: [registryFile([anchor]), baselineFile({})] })
+  assert.deepEqual(findings, [])
+})
+
 test('a covers host that does not share the anchor host eTLD+1 is flagged', () => {
   const anchor = sourceAnchor({ covers: [{ host: 'unrelated-domain.test', reason: 'test' }] })
   const { findings } = run({ files: [registryFile([anchor]), baselineFile({})] })

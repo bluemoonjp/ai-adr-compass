@@ -45,13 +45,21 @@ export function lingeringChanged(sourceEntries, nowMs) {
 }
 
 // control-static must match its previous observation; control-changing must
-// differ from it. Only meaningful once a previous observation exists — a
+// differ from it; published-static (a published measurement file — see
+// ADR-0003) must match its previous observation, same comparison as
+// control-static but reported under its own reason text in computeRunState
+// so "the patrol mechanism itself is broken" (a control mismatch) is never
+// conflated with "a published measurement's bytes changed after
+// publication" (a content-integrity incident) — the two need different
+// responses, and folding them into one health message would hide which one
+// happened. Only meaningful once a previous observation exists — a
 // "no-baseline" or "failed" state means there is nothing to compare, so the
 // caller should not ask this question for those states (computeRunState
 // already filters them out before calling this).
 export function controlMismatch(role, state) {
   if (role === 'control-static') return state === 'changed'
   if (role === 'control-changing') return state === 'unchanged' || state === 'not-modified'
+  if (role === 'published-static') return state === 'changed'
   return false
 }
 
@@ -72,7 +80,11 @@ export function computeRunState({ sourceEntries, controlEntries, openWeeklyIssue
   for (const control of controlEntries) {
     if (control.state === 'no-baseline' || control.state === 'failed') continue
     if (controlMismatch(control.role, control.state)) {
-      reasons.push({ level: 'broken', reason: `control ${control.id} did not match its expectation (state: ${control.state})` })
+      const reason =
+        control.role === 'published-static'
+          ? `published measurement ${control.id} no longer matches its published bytes (state: ${control.state})`
+          : `control ${control.id} did not match its expectation (state: ${control.state})`
+      reasons.push({ level: 'broken', reason })
     }
   }
 

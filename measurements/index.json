@@ -5,7 +5,8 @@
       "sha256": "44537e335708612aae39afed4a7ba2aa5918a4567bf5194ad4f5fbbc684aa732",
       "publishedOn": "2026-09-22",
       "corpus": "corpus-a",
-      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-a.md"
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-a.md",
+      "anchor": "measurement-corpus-a"
     }
   ]
 }

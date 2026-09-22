@@ -64,6 +64,12 @@ test('controlMismatch: control-changing mismatches on unchanged or not-modified'
   assert.equal(controlMismatch('control-changing', 'changed'), false)
 })
 
+test('controlMismatch: published-static mismatches only on changed, same comparison as control-static', () => {
+  assert.equal(controlMismatch('published-static', 'changed'), true)
+  assert.equal(controlMismatch('published-static', 'unchanged'), false)
+  assert.equal(controlMismatch('published-static', 'not-modified'), false)
+})
+
 function sourceEntry(state, overrides = {}) {
   return { id: 'sample-source', state, ...overrides }
 }
@@ -98,6 +104,18 @@ test('computeRunState: exactly one failed source is degraded, not broken', () =>
     registryCheckPass: true,
   })
   assert.equal(status, 'degraded')
+})
+
+test('computeRunState: a changed published-static entry is broken, with a distinct reason from a control mismatch', () => {
+  const { status, reasons } = computeRunState({
+    sourceEntries: [sourceEntry('unchanged')],
+    controlEntries: [{ id: 'measurement-corpus-a', role: 'published-static', state: 'changed' }],
+    openWeeklyIssues: 1,
+    registryCheckPass: true,
+  })
+  assert.equal(status, 'broken')
+  assert.ok(reasons.some((r) => r.reason.includes('published measurement measurement-corpus-a no longer matches its published bytes')))
+  assert.ok(!reasons.some((r) => r.reason.startsWith('control ')))
 })
 
 test('computeRunState: a control that only failed to fetch is degraded, not broken', () => {

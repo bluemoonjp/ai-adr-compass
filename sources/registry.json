@@ -50,6 +50,14 @@
       "role": "control-changing",
       "tools": ["general"],
       "approval": { "decidedBy": "human", "on": "2026-09-22" }
+    },
+    {
+      "id": "measurement-corpus-a",
+      "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-a.md",
+      "method": "md5",
+      "role": "published-static",
+      "tools": ["general"],
+      "approval": { "decidedBy": "human", "on": "2026-09-22" }
     }
   ]
 }

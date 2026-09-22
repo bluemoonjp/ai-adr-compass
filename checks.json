@@ -196,7 +196,7 @@
       "fast": true,
       "fixture": true,
       "protects": "docs/adr/'s record count, fan-in, fan-out, generation rate, and staleness are measured by starter/adr-volume-guard/ and reported, and any ADR-NNNN reference that names a number absent from this repository's own docs/adr/ is flagged regardless of any threshold, since a repository that publishes guidance on ADR volume without measuring its own corpus is advice it does not itself practice.",
-      "enforces": []
+      "enforces": ["0004"]
     },
     {
       "id": "measurement-integrity",

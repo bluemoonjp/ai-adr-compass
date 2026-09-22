@@ -55,13 +55,29 @@ export async function runPatrol({ registry, baseline, previousState, repoFiles, 
         ? nextFirstChangedAt({ state: result.state, previousFirstChangedAt: previousEntry?.firstChangedAt, today })
         : undefined
 
+    // A failed fetch (timeout, non-2xx, empty body) never carries an
+    // etag/md5 (fetch.mjs's classify()). For a non-source role, next run's
+    // comparison baseline IS this state.json entry (see baselineEntry
+    // above) — if a failed run silently drops the digest, the following
+    // successful fetch has nothing to compare against, reports
+    // "no-baseline" instead of comparing, and re-pins to whatever bytes are
+    // served then with zero comparison to what was actually last accepted.
+    // One transient failure would otherwise erase the integrity pin
+    // published-static (and control-static/control-changing) anchors exist
+    // to hold. Carrying the previous digest forward across a failure keeps
+    // that comparison intact; it never affects role:source's own next-run
+    // baseline, which always comes from sources/baseline.json, never from
+    // this state.json entry.
+    const carriedEtag = result.etag === undefined && result.state === 'failed' ? previousEntry?.etag : undefined
+    const carriedMd5 = result.md5 === undefined && result.state === 'failed' ? previousEntry?.md5 : undefined
+
     nextSources[anchor.id] = {
       role: anchor.role,
       state: result.state,
       checkedAt: result.checkedAt,
       http: result.http ?? null,
-      ...(result.etag !== undefined ? { etag: result.etag } : {}),
-      ...(result.md5 !== undefined ? { md5: result.md5 } : {}),
+      ...(result.etag !== undefined ? { etag: result.etag } : carriedEtag !== undefined ? { etag: carriedEtag } : {}),
+      ...(result.md5 !== undefined ? { md5: result.md5 } : carriedMd5 !== undefined ? { md5: carriedMd5 } : {}),
       bytes: result.bytes ?? 0,
       ...(firstChangedAt ? { firstChangedAt } : {}),
     }
