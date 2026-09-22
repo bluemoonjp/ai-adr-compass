@@ -1,0 +1,9 @@
+# ADR-9101: A clean record
+
+Status: accepted
+
+Date: 2026-01-01
+
+## Context
+
+No references to anything outside this fixture set.

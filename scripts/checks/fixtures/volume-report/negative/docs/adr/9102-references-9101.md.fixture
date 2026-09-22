@@ -1,0 +1,10 @@
+# ADR-9102: A record with a resolved reference
+
+Status: accepted
+
+Date: 2026-01-02
+
+## Context
+
+References ADR-9101, which exists in this same fixture set and therefore
+resolves.
