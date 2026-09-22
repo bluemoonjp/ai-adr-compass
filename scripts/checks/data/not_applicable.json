@@ -1,3 +1,4 @@
 {
-  "practices/0001": "No automated check can judge whether a specific decision clears the architectural-significance threshold (business value, a key abstraction, a costly-to-reverse choice); enforcement is left to review, since that requires understanding the decision's own stakes, not the ADR file's structure."
+  "practices/0001": "No automated check can judge whether a specific decision clears the architectural-significance threshold (business value, a key abstraction, a costly-to-reverse choice); enforcement is left to review, since that requires understanding the decision's own stakes, not the ADR file's structure.",
+  "practices/0003": "No automated check can detect that an ADR file was deleted, since a check only sees the files that currently exist; enforcement is left to review (and to git history, which records a deletion CI cannot query against a live checkout)."
 }
