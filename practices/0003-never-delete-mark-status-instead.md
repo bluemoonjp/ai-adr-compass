@@ -13,11 +13,11 @@ sources:
     verified_on: "2026-09-22"
     summary: Nygard's original template states that a reversed decision is kept, not deleted, and marked superseded so a reader can see it was once the decision.
     quote: If a decision is reversed, we will keep the old one around, but mark it as superseded. (It's still relevant to know that it was the decision, but is no longer the decision.)
-  - url: https://github.com/adr/madr/tree/develop/docs/decisions
+  - url: https://github.com/adr/madr/blob/develop/docs/decisions/0003-provide-own-madr-tools.md
     kind: primary
     confidence: verified
     verified_on: "2026-09-22"
-    summary: MADR's own decision log keeps 0003-provide-own-madr-tools.md in place with status "on hold" rather than deleting it once that plan stalled, an in-repo example of the same never-delete rule. This is a live corpus, not a fixed publication, and may drift as the project adds ADRs.
+    summary: MADR's own decision log keeps this ADR in place with status "on hold" rather than deleting it once that plan stalled, an in-repo example of the same never-delete rule. The wider decisions/ directory is a live corpus, not a fixed publication, and may drift as the project adds ADRs.
     quote: "status: on hold"
 ---
 
@@ -27,4 +27,4 @@ Deleting an ADR erases the one thing a later reader most needs when they stumble
 
 ## When it applies
 
-This applies whenever an ADR's decision is reversed, replaced, or simply abandoned before being carried out. Update the Status field to reflect the new state (MADR's own corpus shows this need not be binary — a decision can sit at an intermediate state like "on hold" rather than jumping straight to accepted or superseded) and, where a replacement decision exists, point to it. It does not cover what the closed set of valid Status values should be — that is `adr-format`'s concern — only that the file itself is never removed.
+This applies whenever an ADR's decision is reversed, replaced, or simply abandoned before being carried out. Update the Status field to reflect the new state (MADR's own corpus shows this need not be binary — a decision can sit at an intermediate state like "on hold" rather than jumping straight to accepted or superseded) and, where a replacement decision exists, point to it. It does not cover which Status vocabulary a project should use — that is `adr-format`'s concern — only that the file itself is never removed.
