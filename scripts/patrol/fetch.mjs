@@ -7,9 +7,9 @@ const RETRYABLE_STATUS_MIN = 500
 // Anchor-specific body extractors for hosts whose raw response embeds a
 // fresh envelope (a request id, a timestamp) on every request even when the
 // result itself hasn't changed, so hashing the raw body would report
-// "changed" every week. None of v0.1's anchors need one yet; this stays
-// empty until one does (see fetch.mjs upstream's arxiv-coding-agent entry
-// for the shape a future entry would take).
+// "changed" every week. None of v0.1's anchors need one yet; add an entry
+// keyed by anchor id, returning the stable signature to hash instead of the
+// raw body, once one does.
 const BODY_EXTRACTORS = {}
 
 export function md5Hex(text) {
