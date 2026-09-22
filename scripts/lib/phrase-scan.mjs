@@ -18,9 +18,15 @@ const { groups } = JSON.parse(readFileSync(dataPath, 'utf8'))
 
 const FRONTMATTER = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/
 
+// Returns the body text plus how many lines of the original file preceded
+// it, so a body-relative line index can be translated back to a real file
+// line number. Frontmatter, when present, shifts every body line down.
 function bodyOf(text) {
   const match = FRONTMATTER.exec(text)
-  return match ? match[2] : text
+  if (!match) return { body: text, offset: 0 }
+  const prefix = text.slice(0, text.length - match[2].length)
+  const offset = (prefix.match(/\n/g) ?? []).length
+  return { body: match[2], offset }
 }
 
 export function scanPhraseGroups(files, ruleId, groupIds) {
@@ -35,14 +41,15 @@ export function scanPhraseGroups(files, ruleId, groupIds) {
 
   const findings = []
   for (const file of files) {
-    const lines = bodyOf(file.text).split('\n')
+    const { body, offset } = bodyOf(file.text)
+    const lines = body.split('\n')
     for (const group of compiledGroups) {
       if (!matchesAnyGlob(file.path, group.scope)) continue
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i]
         if (group.excludeIfMatches.some((p) => p.test(line))) continue
         if (group.patterns.some((p) => p.test(line))) {
-          findings.push({ path: file.path, line: i + 1, ruleId: `${ruleId}:${group.id}` })
+          findings.push({ path: file.path, line: offset + i + 1, ruleId: `${ruleId}:${group.id}` })
         }
       }
     }
