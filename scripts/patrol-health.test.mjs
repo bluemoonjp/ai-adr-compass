@@ -46,6 +46,19 @@ test('a control mismatch is broken and exits 1', () => {
   assert.ok(lines.some((l) => l.startsWith('broken:') && l.includes('control-changing-time')))
 })
 
+test('a changed published-static entry is broken and exits 1, with a distinct message from a control mismatch', () => {
+  const state = baseState({
+    sources: {
+      ...baseState().sources,
+      'measurement-corpus-a': { role: 'published-static', state: 'changed', checkedAt: '2026-09-19T03:00:00.000Z' },
+    },
+  })
+  const { lines, exitCode } = evaluate(state)
+  assert.equal(exitCode, 1)
+  assert.ok(lines.some((l) => l.startsWith('broken:') && l.includes('published measurement measurement-corpus-a')))
+  assert.ok(!lines.some((l) => l.includes('control measurement-corpus-a')))
+})
+
 test('exactly one failed source is degraded and exits 0, with the failure shown first', () => {
   const state = baseState({
     sources: {

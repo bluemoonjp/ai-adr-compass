@@ -7,7 +7,7 @@
     },
     "topic": {
       "description": "Closed enum. Widen it only alongside content that uses the new value.",
-      "enum": ["adr-scope", "adr-format", "adr-lifecycle"]
+      "enum": ["adr-scope", "adr-format", "adr-lifecycle", "adr-volume"]
     },
     "appliesTo": {
       "description": "Which ADR convention a practice, antipattern, or registry anchor applies to, not an agent tool name.",

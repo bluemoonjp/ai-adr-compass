@@ -52,3 +52,7 @@ avoid. Probe a candidate URL (`node scripts/patrol.mjs --probe <url>`)
 before registering it as `role: "source"`: the schema requires
 `approval.probe.volatile: false`, so a URL whose raw body changes on every
 request needs a stable ETag before it can be trusted to detect real change.
+`role: "published-static"` (a measurement this repository published itself —
+`.claude/skills/adr-compass-measure/SKILL.md`) needs no probe: its own
+`measurement-integrity` check, not a volatility probe, is what already
+confirms its bytes are stable.
