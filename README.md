@@ -21,7 +21,7 @@ v0.1 in progress. Content only lands once each claim traces to a primary or rese
 Clone this repository and read [`practices/index.md`](practices/index.md) for the current sourced guidance on writing ADRs.
 
 <!-- gen:start:how-to-use-en -->
-_Generated from `practices/*.md` by `pnpm gen`; do not edit this block._ **2** active practices are indexed in [`practices/index.md`](practices/index.md), licensed under [CC BY 4.0](LICENSE-DOCS).
+_Generated from `practices/*.md` by `pnpm gen`; do not edit this block._ **3** active practices are indexed in [`practices/index.md`](practices/index.md), licensed under [CC BY 4.0](LICENSE-DOCS).
 <!-- gen:end:how-to-use-en -->
 
 ### Layout
@@ -63,7 +63,7 @@ v0.1 進行中。各主張が一次情報・研究情報として生きた文書
 このリポジトリを clone し、[`practices/index.md`](practices/index.md) で ADR 執筆に関する現時点の出典付きガイダンスを確認してください。
 
 <!-- gen:start:how-to-use-ja -->
-_`practices/*.md` から `pnpm gen` で生成。このブロックは編集しないこと。_ **2** 件の active な practice を [`practices/index.md`](practices/index.md) に索引化(ライセンス: [CC BY 4.0](LICENSE-DOCS))。
+_`practices/*.md` から `pnpm gen` で生成。このブロックは編集しないこと。_ **3** 件の active な practice を [`practices/index.md`](practices/index.md) に索引化(ライセンス: [CC BY 4.0](LICENSE-DOCS))。
 <!-- gen:end:how-to-use-ja -->
 
 ### Layout
