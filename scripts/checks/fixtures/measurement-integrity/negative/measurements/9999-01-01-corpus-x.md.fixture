@@ -1,0 +1,27 @@
+# Measurement: corpus-x
+
+Published: 2026-01-01
+
+## Corpus characteristics
+
+| field | value |
+| --- | --- |
+| visibility | public |
+| record count | 3 |
+| observed days | 10 |
+| primary language | English |
+| reference notation | ADR-NNNN |
+
+## Volume
+
+records: 3 (dates resolved: 3)
+unresolved references (always significant, regardless of any threshold): 0
+
+| metric | p50 | p90 | p95 | max |
+| --- | --- | --- | --- | --- |
+| fan-out (total) | 0 | 0 | 0 | 0 |
+| fan-out (distinct) | 0 | 0 | 0 | 0 |
+| fan-in (total) | 0 | 0 | 0 | 0 |
+| fan-in (distinct) | 0 | 0 | 0 | 0 |
+| generation rate (records / trailing 7 days) | 1 | 1 | 1 | 1 |
+| days since decision | 5 | 5 | 5 | 5 |
