@@ -25,7 +25,7 @@
       "fast": true,
       "fixture": true,
       "protects": "Each ADR file must follow the docs/adr/NNNN-slug.md naming scheme, declare one of the four valid Status values, declare a Date: line formatted YYYY-MM-DD, and reference other ADRs by ID only, since a broken, undated, or ambiguous decision record cannot be trusted the next time it is read.",
-      "enforces": []
+      "enforces": ["0002"]
     },
     {
       "id": "frontmatter-schema",

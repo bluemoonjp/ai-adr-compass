@@ -6,8 +6,8 @@
       "enum": ["draft", "active"]
     },
     "topic": {
-      "description": "Closed enum. Its initial value is the seed content's topic only (adr-scope); widen it only alongside content that uses the new value.",
-      "enum": ["adr-scope"]
+      "description": "Closed enum. Widen it only alongside content that uses the new value.",
+      "enum": ["adr-scope", "adr-format"]
     },
     "appliesTo": {
       "description": "Which ADR convention a practice, antipattern, or registry anchor applies to, not an agent tool name.",
