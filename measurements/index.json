@@ -10,7 +10,7 @@
     },
     {
       "file": "measurements/2026-09-22-corpus-b.md",
-      "sha256": "852e47cd3cac9fad4846232e92596c45f90071c41947fdbad838f049a30fc9f2",
+      "sha256": "0608684b1e0a00bb41bf8c4371eafd9a4c3d4d8f9e121c57fd584290cd55474d",
       "publishedOn": "2026-09-22",
       "corpus": "corpus-b",
       "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-b.md",
@@ -18,7 +18,7 @@
     },
     {
       "file": "measurements/2026-09-22-corpus-c.md",
-      "sha256": "9c68dd72fe484c05e5523f23e75809b2cc62aa1b2813359732081f0fea329d06",
+      "sha256": "813b24fe035c48a8ba1d4012136c6066cfc3df7d0b160b1e47625eda927e7e24",
       "publishedOn": "2026-09-22",
       "corpus": "corpus-c",
       "url": "https://raw.githubusercontent.com/bluemoonjp/ai-adr-compass/main/measurements/2026-09-22-corpus-c.md",
