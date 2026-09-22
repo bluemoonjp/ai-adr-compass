@@ -42,7 +42,7 @@
       "blocking": true,
       "fast": true,
       "fixture": true,
-      "protects": "Every active practice must be named in some check's enforces list or in scripts/checks/data/not_applicable.json with a reason, since a practice nobody enforces and nobody has excused is silently unchecked.",
+      "protects": "Every active practice must be named in some check's enforces list, and every active practice or antipattern must otherwise be named in scripts/checks/data/not_applicable.json with a reason (an antipattern can only ever be resolved this way, never via enforces), since a practice or antipattern nobody enforces and nobody has excused is silently unchecked.",
       "enforces": []
     },
     {
