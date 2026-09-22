@@ -114,7 +114,7 @@
       "blocking": true,
       "fast": true,
       "fixture": true,
-      "protects": "Only the allowlisted paths may use a filename some agent discovers as a live instruction file, since a raw copy under templates/ fires for an agent working on this repository.",
+      "protects": "Only the allowlisted paths may use a filename some agent discovers as a live instruction file, since a raw copy under templates/ fires for an agent working on this repository. starter/ needs no allowlist entry of its own: it carries only genuine source code, never a copy of a process document shaped like an instruction file.",
       "enforces": []
     },
     {
@@ -187,6 +187,15 @@
       "fast": true,
       "fixture": true,
       "protects": "Every active practice and antipattern's oldest sources[].verified_on is checked against a 180-day threshold and reported, since a source nobody has revisited in six months is exactly what the weekly patrol exists to catch.",
+      "enforces": []
+    },
+    {
+      "id": "volume-report",
+      "script": "scripts/checks/volume-report.mjs",
+      "blocking": false,
+      "fast": true,
+      "fixture": true,
+      "protects": "docs/adr/'s record count, fan-in, fan-out, generation rate, and staleness are measured by starter/adr-volume-guard/ and reported, and any ADR-NNNN reference that names a number absent from this repository's own docs/adr/ is flagged regardless of any threshold, since a repository that publishes guidance on ADR volume without measuring its own corpus is advice it does not itself practice.",
       "enforces": []
     }
   ]

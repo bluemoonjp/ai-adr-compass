@@ -92,6 +92,7 @@ test('renderIssueBody never leaks a poisoned id, state, or url beyond their allo
     changed,
     failed,
     freshnessMarkdown: 'stale: 0 / checked: 0',
+    volumeMarkdown: 'records: 0 (dates resolved: 0)',
     linksSection: 'broken: 0 / checked: 0',
   })
 
@@ -112,6 +113,7 @@ test('renderIssueBody renders (none) for empty changed/failed lists', () => {
     changed: [],
     failed: [],
     freshnessMarkdown: 'stale: 0 / checked: 0',
+    volumeMarkdown: 'records: 0 (dates resolved: 0)',
     linksSection: 'broken: 0 / checked: 0',
   })
   assert.match(body, /## Changed\n\n\(none\)/)
@@ -126,7 +128,21 @@ test('renderIssueBody includes a clickable registry url for a changed source', (
     changed,
     failed: [],
     freshnessMarkdown: 'stale: 0 / checked: 0',
+    volumeMarkdown: 'records: 0 (dates resolved: 0)',
     linksSection: 'broken: 0 / checked: 0',
   })
   assert.match(body, /- sample-source \(https:\/\/example\.com\/a\)/)
+})
+
+test('renderIssueBody places a ## Volume section between Freshness and External links', () => {
+  const body = renderIssueBody({
+    health: { lines: ['ok: 0 sources'], exitCode: 0 },
+    sourceRows: [],
+    changed: [],
+    failed: [],
+    freshnessMarkdown: 'stale: 0 / checked: 0',
+    volumeMarkdown: 'records: 5 (dates resolved: 5)',
+    linksSection: 'broken: 0 / checked: 0',
+  })
+  assert.match(body, /## Freshness\n\nstale: 0 \/ checked: 0\n\n## Volume\n\nrecords: 5 \(dates resolved: 5\)\n\n## External links/)
 })

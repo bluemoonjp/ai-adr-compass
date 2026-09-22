@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { computeFreshness, renderMarkdown as renderFreshnessMarkdown } from '../checks/freshness-report.mjs'
 import { evaluate as evaluateHealth } from '../patrol-health.mjs'
 import { loadRepoFiles } from '../lib/runner.mjs'
+import { measureAdrDir, renderMarkdown as renderVolumeMarkdown } from '../../starter/adr-volume-guard/index.mjs'
 import { renderLinkSection, summarizeLycheeStats } from './link-report.mjs'
 import { daysSince } from './state.mjs'
 
@@ -18,6 +19,14 @@ const URL_PATTERN = /^https:\/\/\S+$/
 // written by a previous run) can only ever contribute an allowed shape — see
 // format.mjs's identical reasoning. The issue body and CI logs are a public
 // surface.
+//
+// The `## Volume` section below (renderVolumeMarkdown) does not go through
+// a safe*() wrapper of its own: unlike state.json, which patrol.mjs fills
+// from a live fetch of an external, potentially adversarial URL,
+// measureAdrDir() reads only this repository's own git-tracked, PR-reviewed
+// docs/adr/*.md files, and renders nothing but computed integers/floats
+// (fmt() in starter/adr-volume-guard/index.mjs) — never a record's own
+// prose. There is no untrusted text on that path to leak.
 function safeId(v) {
   return typeof v === 'string' && ID_PATTERN.test(v) ? v : 'invalid-id'
 }
@@ -85,7 +94,7 @@ function renderIdList(items) {
 }
 
 // Pure: assembles the full weekly Issue body from already-computed pieces.
-export function renderIssueBody({ health, sourceRows, changed, failed, freshnessMarkdown, linksSection }) {
+export function renderIssueBody({ health, sourceRows, changed, failed, freshnessMarkdown, volumeMarkdown, linksSection }) {
   return [
     '## Run status',
     '',
@@ -106,6 +115,10 @@ export function renderIssueBody({ health, sourceRows, changed, failed, freshness
     '## Freshness',
     '',
     freshnessMarkdown,
+    '',
+    '## Volume',
+    '',
+    volumeMarkdown,
     '',
     '## External links',
     '',
@@ -141,7 +154,9 @@ function main() {
   const sourceRows = buildSourceRows({ state, baseline })
   const changed = listIdsByState(state, registry, 'changed', { sourceOnly: true })
   const failed = listIdsByState(state, registry, 'failed')
-  const freshness = computeFreshness(loadRepoFiles(root))
+  const repoFiles = loadRepoFiles(root)
+  const freshness = computeFreshness(repoFiles)
+  const volume = measureAdrDir(repoFiles)
   const linksSection = renderLinkSection(summarizeLycheeStats(linksStats))
 
   console.log(
@@ -151,6 +166,7 @@ function main() {
       changed,
       failed,
       freshnessMarkdown: renderFreshnessMarkdown(freshness),
+      volumeMarkdown: renderVolumeMarkdown(volume),
       linksSection,
     }),
   )

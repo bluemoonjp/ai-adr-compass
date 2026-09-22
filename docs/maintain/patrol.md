@@ -29,10 +29,15 @@ cascade a workflow trigger for an event created by the default
 is exactly that kind of event, so `public-surface.yml` does not scan it.
 The only thing standing between a rendered Issue body and a leak is
 `scripts/patrol/issue-body.mjs`'s own field-level validation (the same
-allowlist-and-throw design as `scripts/patrol/format.mjs`). A change to
-either file needs its own manual re-check — render a realistic body locally
-and confirm it produces no findings against `forbidden-patterns` — before
-merging.
+allowlist-and-throw design as `scripts/patrol/format.mjs`), for the fields
+it reads off `state.json` — a file patrol fills from a live fetch of an
+external URL. The `## Volume` section is a different case: it is computed
+fresh from this repository's own git-tracked `docs/adr/` on every render
+(`starter/adr-volume-guard/index.mjs`'s `measureAdrDir`) and renders only
+computed numbers, never a record's own text, so it carries none of that
+risk. A change to either `issue-body.mjs` or `format.mjs` needs its own
+manual re-check — render a realistic body locally and confirm it produces
+no findings against `forbidden-patterns` — before merging.
 
 ## 3. Adding a new registry anchor
 
